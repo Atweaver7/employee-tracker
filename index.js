@@ -67,6 +67,10 @@ function initialMenu() {
           addDepartment();
           break;
 
+        case "Add a role":
+          addRole();
+          break;
+
         case "Update an employee":
           viewEmployees();
           break;
@@ -87,14 +91,11 @@ function initialMenu() {
 // }
 
 function viewDepartments() {
-  db.query(
-    "SELECT id, name FROM department",
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-      initialMenu();
-    }
-  );
+  db.query("SELECT id, name FROM department", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    initialMenu();
+  });
 }
 
 function viewRoles() {
@@ -187,6 +188,41 @@ function roleSelect() {
   });
   return roleArray;
 }
+
+function addRole() {
+  db.query(
+    "SELECT role.title AS Title, role.salary AS Salary FROM role",
+    function (err, res) {
+      inquirer
+        .prompt([
+          {
+            name: "title",
+            type: "input",
+            message: "What role would you like to add?",
+          },
+          {
+            name: "salary",
+            type: "input",
+            message: "What is the salary?",
+          },
+        ])
+        .then((data) => {
+          db.query(
+            "INSERT INTO role SET ?",
+            {
+              title: data.title,
+              salary: data.salary,
+            },
+            function (err) {
+              if (err) throw err;
+              console.table(res);
+              initialMenu();
+            }
+          );
+        });
+    }
+  );
+}
 function addDepartment() {
   inquirer
     .prompt([
@@ -197,14 +233,15 @@ function addDepartment() {
       },
     ])
     .then((data) => {
-      db.query("INSERT INTO department SET ?", 
-      {
-        name: data.departmentName
-      },
-      function(err) {
-        if (err) throw err
-        initialMenu();
-      }
+      db.query(
+        "INSERT INTO department SET ?",
+        {
+          name: data.departmentName,
+        },
+        function (err) {
+          if (err) throw err;
+          initialMenu();
+        }
       );
     });
 }
