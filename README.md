@@ -14,15 +14,8 @@ The user should clone the repository from GitHub. This application requires Node
 Usage
 This application will allow users to view, add, and edit employees, roles, departments, and managers.
 
-View walk through video via Screencastify
 
 License
 This project is license under MIT
 
-Contributing
-Contributors should read the installation section.
 
-Tests
-There are no tests for this application.
-
-Questions
